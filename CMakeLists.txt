@@ -1,4 +1,4 @@
-project(httpd_api_example)
+project(geo-targeted-link-redirect)
 cmake_minimum_required(VERSION 3.13)
 
 find_package(Threads)
@@ -6,12 +6,14 @@ find_package(Threads)
 include_directories(${PROJECT_BINARY_DIR}/include)
 link_directories(${PROJECT_BINARY_DIR}/lib)
 
+set(GEOLITE2_COUNTRY_DATABASE_FILENAME "${PROJECT_SOURCE_DIR}/share/GeoLite2-Country.mmdb" CACHE FILEPATH "Filepath for GeoLite2-Country.mmdb https://dev.maxmind.com/geoip/geoip2/geolite2/")
+
 add_subdirectory(src)
 
 include(ExternalProject)
 
 ExternalProject_Add(mongoose-cpp
-	GIT_REPOSITORY https://github.com/Gregwar/mongoose-cpp.git
+	GIT_REPOSITORY https://github.com/oracle2025/mongoose-cpp.git
 	INSTALL_DIR ${PROJECT_BINARY_DIR}
 	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>)
 
