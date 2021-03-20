@@ -1,5 +1,5 @@
 project(httpd_api_example)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.19.4)
 
 include_directories(${PROJECT_BINARY_DIR}/include)
 link_directories(${PROJECT_BINARY_DIR}/lib)
