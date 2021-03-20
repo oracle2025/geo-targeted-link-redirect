@@ -1,3 +1,4 @@
 
-add_executable(main main.cpp)
-target_link_libraries(main mongoose)
+add_executable(server main.cpp)
+target_link_libraries(server mongoose Threads::Threads)
+install(TARGETS server RUNTIME DESTINATION bin)
