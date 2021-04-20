@@ -1,7 +1,10 @@
 project(geo-targeted-link-redirect)
 cmake_minimum_required(VERSION 3.13)
 
+set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib/cmake)
+
 find_package(Threads)
+find_package(Poco COMPONENTS Net Util)
 
 include_directories(${PROJECT_BINARY_DIR}/include)
 link_directories(${PROJECT_BINARY_DIR}/lib)
@@ -9,11 +12,13 @@ link_directories(${PROJECT_BINARY_DIR}/lib)
 set(GEOLITE2_COUNTRY_DATABASE_FILENAME "${PROJECT_SOURCE_DIR}/share/GeoLite2-Country.mmdb" CACHE FILEPATH "Filepath for GeoLite2-Country.mmdb https://dev.maxmind.com/geoip/geoip2/geolite2/")
 
 add_subdirectory(src)
+add_subdirectory(test)
 
 include(ExternalProject)
 
 ExternalProject_Add(mongoose-cpp
 	GIT_REPOSITORY https://github.com/oracle2025/mongoose-cpp.git
+	#GIT_REPOSITORY /Users/richardspindler/projects/mongoose-cpp
 	INSTALL_DIR ${PROJECT_BINARY_DIR}
 	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>)
 
@@ -25,3 +30,15 @@ ExternalProject_Add(libmaxminddb
         CMAKE_ARGS
                 -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
         )
+
+if(NOT ${Poco_FOUND})
+	ExternalProject_Add(libpoco
+		URL https://pocoproject.org/releases/poco-1.10.1/poco-1.10.1.tar.gz
+		URL_HASH MD5=aa3bdcfcc1d0fa6bc510efba4c331f2c
+		INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}
+		DOWNLOAD_NO_PROGRESS ON
+		CMAKE_ARGS
+			-DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
+		)
+endif()
+

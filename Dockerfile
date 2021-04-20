@@ -5,7 +5,7 @@ FROM debian:buster AS base
 
 RUN set -ex;         \
     apt-get update;  \
-    apt-get install -y procps
+    apt-get install -y procps libpoconet60 libpocoutil60
 
 # The first stage will install build dependencies on top of the
 # runtime dependencies, and then compile
@@ -13,7 +13,7 @@ RUN set -ex;         \
 FROM base AS builder
 
 RUN set -ex;                                                                      \
-    apt-get install -y g++ curl cmake git;                                        \
+    apt-get install -y g++ curl cmake git libpoco-dev;                            \
     mkdir -p /usr/src;                                                            \
     mkdir -p /usr/local/share
 
@@ -35,4 +35,4 @@ COPY --from=builder /usr/local/share /usr/local/share
 
 EXPOSE 8080/tcp
 
-ENTRYPOINT ["server"]
+ENTRYPOINT ["poco-based-webserver"]
