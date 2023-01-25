@@ -1,5 +1,5 @@
 project(geo-targeted-link-redirect)
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.20)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib/cmake)
 
@@ -33,10 +33,11 @@ ExternalProject_Add(libmaxminddb
 
 if(NOT ${Poco_FOUND})
 	ExternalProject_Add(libpoco
-		URL https://pocoproject.org/releases/poco-1.10.1/poco-1.10.1.tar.gz
-		URL_HASH MD5=aa3bdcfcc1d0fa6bc510efba4c331f2c
+		GIT_REPOSITORY https://github.com/pocoproject/poco.git
+		GIT_TAG poco-1.10.1-release
+		GIT_SHALLOW ON
+		GIT_PROGRESS OFF
 		INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}
-		DOWNLOAD_NO_PROGRESS ON
 		CMAKE_ARGS
 			-DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
 		)

@@ -15,6 +15,18 @@ set_target_properties(server
 	CXX_STANDARD 14
 	CXX_EXTENSIONS off
 	)
+
+string( MAKE_C_IDENTIFIER "form.html" input_identifier )
+set( output "${CMAKE_CURRENT_BINARY_DIR}/${input_identifier}.o" )
+add_custom_command(
+		OUTPUT ${output}
+		COMMAND ${CMAKE_LINKER} --relocatable --format binary --output ${output} "form.html"
+		#COMMAND gcc -sectcreate __DATA __example_jpg example.jpg -o myapp myapp.c
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		DEPENDS form.html
+)
+add_custom_target( rc ALL DEPENDS ${output} )
+
 install(TARGETS server RUNTIME DESTINATION bin)
 if(${Poco_FOUND})
 	add_executable(poco-based-webserver poco-based-webserver.cpp MyPageHandler.cpp MyPageHandler.hpp FormPageHandler.cpp
@@ -28,7 +40,7 @@ if(${Poco_FOUND})
 			HandlerFactory.cpp
 			HandlerFactory.hpp)
 	target_link_libraries(poco-based-webserver Poco::Net Poco::Util mongoose
-		Threads::Threads country_database)
+		Threads::Threads country_database ${output})
 	target_include_directories(poco-based-webserver PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 	install(TARGETS poco-based-webserver RUNTIME DESTINATION bin)
 endif()
