@@ -9,9 +9,10 @@
 #include "urlencode.hpp"
 #include "CountryDatabase.hpp"
 #include <Poco/Net/HTTPServerResponse.h>
+#include <Poco/Net/EscapeHTMLStream.h>
+
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandler.h>
-#include <mongoose/Utils.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 #include <Poco/URI.h>
 #include <Poco/Net/HTMLForm.h>
@@ -33,7 +34,7 @@ void ErroPageHandler::handleRequest(Poco::Net::HTTPServerRequest &request, Poco:
     response.setStatus("404");
 
     //opens the file stream
-    ostream& responseStream = response.send();
+    std::ostream& responseStream = response.send();
 
     responseStream << "<html><head><head><title>My  HTTP Server in C++ </title></head>";
     responseStream << "<body><h1>PAGE NOT FOUND, SORRY!</h1><p>";

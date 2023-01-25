@@ -9,8 +9,8 @@
 #include "CountryDatabase.hpp"
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/EscapeHTMLStream.h>
 #include <Poco/Net/HTTPRequestHandler.h>
-#include <mongoose/Utils.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 #include <Poco/URI.h>
 #include <Poco/Net/HTMLForm.h>
@@ -28,7 +28,7 @@ void TestPageHandler::handleRequest(Poco::Net::HTTPServerRequest &request, Poco:
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
-    ostream& responseStream = response.send();
+    std::ostream& responseStream = response.send();
 
     responseStream << "<html><head><head><title>My  HTTP Server in C++ </title></head>";
     responseStream << "<body><h1>Hello World 2</h1><p>";
@@ -40,7 +40,8 @@ void TestPageHandler::handleRequest(Poco::Net::HTTPServerRequest &request, Poco:
         auto header = *i;
         auto name = header.first;
         auto value = header.second;
-        responseStream << Mongoose::Utils::htmlEntities(name) << ": " << Mongoose::Utils::htmlEntities(value) << "\n";
+        Poco::Net::EscapeHTMLOutputStream out(responseStream);
+        out << (name) << ": " << (value) << "\n";
     }
 
     if (request.has("x-forwarded-for")) {

@@ -7,7 +7,6 @@
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandler.h>
-#include <mongoose/Utils.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 #include <Poco/URI.h>
 #include <Poco/Net/HTMLForm.h>
@@ -25,7 +24,7 @@ void MyPageHandler::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::N
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
-    ostream& responseStream = response.send();
+    std::ostream& responseStream = response.send();
 
     responseStream << "<html><head><head><title>My  HTTP Server in C++ </title></head>";
     responseStream << "<body><h1>Hello World</h1><p>";

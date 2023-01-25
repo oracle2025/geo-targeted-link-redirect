@@ -12,7 +12,6 @@
 
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 
-#include <mongoose/Utils.h>
 
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerRequest.h>
